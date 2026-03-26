@@ -1,24 +1,19 @@
 #!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-
 const args = process.argv.slice(2);
 const isLocal = args.includes('--local');
 const isGlobal = args.includes('--global') || !isLocal;
-
 const customConfigDir = (() => {
   const idx = args.indexOf('--config-dir');
   return idx !== -1 ? args[idx + 1] : null;
 })();
-
 const sourceDir = path.join(__dirname, '..', 'nvc-flow.md');
 const tasksSource = path.join(__dirname, '..', 'tasks');
 const frameworksSource = path.join(__dirname, '..', 'frameworks');
 const templatesSource = path.join(__dirname, '..', 'templates');
 const checklistsSource = path.join(__dirname, '..', 'checklists');
-
 let claudeDir;
 if (customConfigDir) {
   claudeDir = customConfigDir;
@@ -27,9 +22,7 @@ if (customConfigDir) {
 } else {
   claudeDir = path.join(os.homedir(), '.claude');
 }
-
-const commandsDir = path.join(claudeDir, 'commands', 'nvc-flow');
-
+const commandsDir = path.join(claudeDir, 'commands', 'nvc');
 function copyRecursive(src, dest) {
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
@@ -43,24 +36,16 @@ function copyRecursive(src, dest) {
     }
   }
 }
-
 console.log('Installing NeuralVaultFlow...');
 console.log(`Location: ${isLocal ? 'local (.claude/)' : 'global (~/.claude/)'}`);
 console.log('');
-
 try {
-  // Create commands directory
   if (!fs.existsSync(commandsDir)) fs.mkdirSync(commandsDir, { recursive: true });
-
-  // Copy entry point
   fs.copyFileSync(sourceDir, path.join(commandsDir, 'nvc-flow.md'));
-
-  // Copy auxiliary directories
   copyRecursive(tasksSource, path.join(commandsDir, 'tasks'));
   copyRecursive(frameworksSource, path.join(commandsDir, 'frameworks'));
   copyRecursive(templatesSource, path.join(commandsDir, 'templates'));
   copyRecursive(checklistsSource, path.join(commandsDir, 'checklists'));
-
   console.log(`Skill installed to: ${commandsDir}`);
   console.log('');
   console.log('NeuralVaultFlow installed successfully.');
