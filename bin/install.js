@@ -23,6 +23,7 @@ if (customConfigDir) {
   claudeDir = path.join(os.homedir(), '.claude');
 }
 const commandsDir = path.join(claudeDir, 'commands', 'nvc');
+const assetsDir = path.join(claudeDir, 'nvc-flow-assets');
 function copyRecursive(src, dest) {
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
@@ -41,15 +42,18 @@ console.log(`Location: ${isLocal ? 'local (.claude/)' : 'global (~/.claude/)'}`)
 console.log('');
 try {
   if (!fs.existsSync(commandsDir)) fs.mkdirSync(commandsDir, { recursive: true });
+  // Entry point + tasks direct in commands/nvc/ → /nvc:brainstorm etc.
   fs.copyFileSync(sourceDir, path.join(commandsDir, 'nvc-flow.md'));
-  copyRecursive(tasksSource, path.join(commandsDir, 'tasks'));
-  copyRecursive(frameworksSource, path.join(commandsDir, 'frameworks'));
-  copyRecursive(templatesSource, path.join(commandsDir, 'templates'));
-  copyRecursive(checklistsSource, path.join(commandsDir, 'checklists'));
+  copyRecursive(tasksSource, commandsDir);
+  // Frameworks, templates, checklists outside commands/ → not exposed as slash commands
+  copyRecursive(frameworksSource,  path.join(assetsDir, 'frameworks'));
+  copyRecursive(templatesSource,   path.join(assetsDir, 'templates'));
+  copyRecursive(checklistsSource,  path.join(assetsDir, 'checklists'));
   console.log(`Skill installed to: ${commandsDir}`);
+  console.log(`Assets installed to: ${assetsDir}`);
   console.log('');
   console.log('NeuralVaultFlow installed successfully.');
-  console.log('Open Claude Code and type /nvc:flow to start.');
+  console.log('Open Claude Code and type /nvc:brainstorm to start.');
   console.log('');
   console.log('Commands:');
   console.log('  /nvc:brainstorm  — Structured requirements gathering');
