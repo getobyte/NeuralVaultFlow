@@ -1,0 +1,29 @@
+{
+  "name": "@getobyte/nvc-flow",
+  "version": "0.1.0",
+  "description": "Session-based development workflow with NeuralVaultCore memory — brainstorm, plan, execute, audit, review, and deploy",
+  "bin": {
+    "nvc-flow": "./bin/install.js"
+  },
+  "scripts": {
+    "install-global": "node bin/install.js --global",
+    "install-local": "node bin/install.js --local"
+  },
+  "keywords": [
+    "claude-code",
+    "mcp",
+    "neural-vault",
+    "workflow",
+    "development",
+    "ai-agents",
+    "seo",
+    "geo",
+    "security",
+    "audit"
+  ],
+  "license": "MIT",
+  "author": "getobyte",
+  "engines": {
+    "node": ">=16"
+  }
+}
