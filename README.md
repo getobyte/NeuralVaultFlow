@@ -13,8 +13,11 @@ NeuralVaultFlow orchestrates the full development cycle — from brainstorming t
 ## 🚀 Installation
 
 ```bash
-npx @getobyte/nvc-flow --global    # recommended — available in every workspace
-npx @getobyte/nvc-flow --local     # current project only
+# Global — available in every workspace (recommended)
+npx github:getobyte/NeuralVaultFlow --global
+
+# Local — current project only
+npx github:getobyte/NeuralVaultFlow --local
 ```
 
 Then open Claude Code and type any `/nvc:` command.
